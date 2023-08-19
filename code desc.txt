@@ -1,0 +1,48 @@
+1. **Imports:**
+
+   The code begins by importing the required libraries and modules:
+
+   - `FastAPI`: The main module of the FastAPI framework for building APIs.
+   - `Form`: A class for handling form input data in FastAPI.
+   - `Request`: A class representing the incoming HTTP request.
+   - `Jinja2Templates`: A class for rendering Jinja2 templates.
+
+2. **FastAPI App Setup:**
+
+   - An instance of the `FastAPI` class is created and stored in the `app` variable.
+   - An instance of `Jinja2Templates` is created with the template directory specified as "templates".
+
+3. **Loading and Preprocessing Data:**
+
+   - The MovieLens dataset is loaded using pandas and stored in the `movies` DataFrame.
+   - The `genres` column in the `movies` DataFrame is preprocessed to replace "|" with a space to create a space-separated genre list.
+   - A TF-IDF vectorizer is initialized to convert text data into a numerical representation.
+   - The TF-IDF matrix is computed by fitting the vectorizer to the genre data in the `movies` DataFrame.
+
+4. **Calculating Cosine Similarity:**
+
+   - The cosine similarity matrix is calculated using the `linear_kernel` function from scikit-learn. This matrix represents the similarity between each pair of movies based on their genre descriptions.
+
+5. **Recommendation Function:**
+
+   - The `get_recommendations` function takes a movie title as input and returns a list of recommended movie titles.
+   - It finds the index of the input movie title in the `movies` DataFrame and retrieves the corresponding row index.
+   - It calculates the cosine similarity scores for the input movie with all other movies.
+   - The scores are sorted in descending order, and the top 10 similar movies are selected.
+   - The indices of the similar movies are used to fetch their titles from the `movies` DataFrame.
+
+6. **Routes and Endpoints:**
+
+   - The `/` route is set up with two methods: `GET` and `POST`.
+   - The `GET` method renders the `index.html` template using Jinja2 and passes the `request` object to the template context.
+   - The `POST` method handles form submission. It receives the user input (movie title) using the `Form` class and calls the `get_recommendations` function to get recommended movies. It returns a JSON response with the input and recommendations.
+
+7. **Run the App:**
+
+   - If the script is directly executed (not imported as a module), the FastAPI server is started using the `uvicorn.run` function. The app will listen on host "127.0.0.1" and port 8000.
+
+8. **HTML Template:**
+
+   The HTML template (`index.html`) is used to create the user interface for the recommendation app. It contains a form for users to input a movie title and displays the recommended movies based on the genre similarity.
+
+In summary, the code sets up a FastAPI web application that allows users to input a movie title through a form. When the user submits the form, the app provides movie recommendations based on genre similarity using a content-based recommendation approach. The recommendations are displayed on the web page.
